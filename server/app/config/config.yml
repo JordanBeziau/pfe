@@ -16,8 +16,8 @@ framework:
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
-    form: { enabled: true }
-    csrf_protection: { enabled: true }
+    form: { enabled: false }
+    csrf_protection: { enabled: false }
     validation: { enable_annotations: true }
     serializer: { enable_annotations: true }
     templating:
@@ -84,18 +84,12 @@ nelmio_cors:
 api_platform:
     http_cache:
         invalidation:
-            enabled: true
+            enabled: false
             varnish_urls: '%varnish_urls%'
         max_age: 0
         shared_max_age: 3600
         vary: ['Content-Type', 'Authorization']
         public: true
-    enable_fos_user: true
-
-fos_user:
-    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-    firewall_name: main
-    user_class: AppBundle\Entity\UserAdmin
-    from_email:
-        address: "%mailer_user%"
-        sender_name: "%mailer_user%"
+    swagger:
+         api_keys:
+             - { name: 'Authorization', type: 'header' }

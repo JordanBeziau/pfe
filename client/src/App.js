@@ -1,20 +1,40 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import * as api from './api/Api'
 
 class App extends Component {
+  state = {
+    contacts: [],
+    newContact: {
+      "username": "jojo",
+      "password": "test",
+      "email": "jojo@mail.com"
+    }
+  }
+
+  componentDidMount = () => {
+    this.loadContacts()
+  }
+
+  postButton = () => {
+    api.post('users', this.state.newContact).then(res => this.loadContacts())
+  }
+
+  loadContacts = () => {
+    api.get('users').then(contacts => this.setState({contacts}))
+  }
+
   render() {
+    console.log(this.state.contacts)
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        {
+          this.state.contacts.map(contact => <li key={contact.id}>{contact.username}</li>)
+        }
+        <button onClick={this.postButton}>POST ME !</button>
       </div>
-    );
+    )
   }
 }
 
